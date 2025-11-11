@@ -108,5 +108,16 @@ php artisan db:seed
 
 ```bash
 php artisan storage:link
+
+###  View ファイルの作成
+ resources/views/layouts/common_white.blade.php（共通レイアウト）
+resources/views/layouts/common_pink.blade.php（共通レイアウト）
+resources/views/weight_logs/index.blade.php(トップページ管理画面）
+
+## CSS ファイルの作成
+public/css/common_white.css(共通 CSS)
+public/css/common_pink.css(共通 CSS)
+public/css/dashboard.css（トップページ管理画面）
+
 ```
 
