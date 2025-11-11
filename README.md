@@ -108,16 +108,25 @@ php artisan db:seed
 
 ```bash
 php artisan storage:link
+```
 
 ###  View ファイルの作成
- resources/views/layouts/common_white.blade.php（共通レイアウト）
-resources/views/layouts/common_pink.blade.php（共通レイアウト）
+ resources/views/layouts/common_white.blade.php（共通レイアウト「ホワイト系」）
+resources/views/layouts/common_pink.blade.php（共通レイアウト「ピンク系」）
 resources/views/weight_logs/index.blade.php(トップページ管理画面）
 
 ## CSS ファイルの作成
-public/css/common_white.css(共通 CSS)
-public/css/common_pink.css(共通 CSS)
+public/css/common_white.css(共通 CSS「ホワイト系」)
+public/css/common_pink.css(共通 CSS「ピンク系」)
 public/css/dashboard.css（トップページ管理画面）
 
 ```
+
+### 🌐 ローカル環境での確認用URL
+- アプリケーション: [http://localhost/weight_logs](http://localhost/weight_logs)
+  → トップページ管理画面が表示されます
+- phpMyAdmin: [http://localhost:8080/](http://localhost:8080/)
+  → DB 接続確認やテーブル内容の確認が可能です
+
+---
 
