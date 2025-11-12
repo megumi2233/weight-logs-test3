@@ -38,6 +38,7 @@ Laravel の動作に必要な依存パッケージをインストールします
 
 ```bash
 docker-compose exec php bash
+cd /var/www/html
 composer install
 ```
 
@@ -70,12 +71,13 @@ DB_PASSWORD=laravel_pass
 php artisan key:generate
 ```
 
-※このコマンドは **php コンテナ内**で実行してください。
+※このコマンドは **php コンテナ内のプロジェクトルート**で実行してください。
 
-### php コンテナに入る方法
+### php コンテナに入ってプロジェクトルートへ移動する方法
 
 ```bash
 docker-compose exec php bash
+cd /var/www/html
 ```
 
 ※ コンテナから抜けるときは exit を入力してください。
@@ -84,7 +86,7 @@ docker-compose exec php bash
 
 データベースにテーブルを作成します。
 
-このコマンドも **php コンテナ内**で実行してください。
+このコマンドも **php コンテナ内のプロジェクトルート**で実行してください。
 
 ```bash
 php artisan migrate
@@ -94,7 +96,7 @@ php artisan migrate
 
 初期データを投入します。
 
-このコマンドも **php コンテナ内**で実行してください。
+このコマンドも **php コンテナ内のプロジェクトルート**で実行してください。
 
 ```bash
 php artisan db:seed
@@ -104,23 +106,29 @@ php artisan db:seed
 
 画像やファイルを storage/app/public から公開できるようにリンクを作成します。
 
-このコマンドも **php コンテナ内**で実行してください。
+このコマンドも **php コンテナ内のプロジェクトルート**で実行してください。
 
 ```bash
 php artisan storage:link
 ```
+---
 
 ###  View ファイルの作成
  resources/views/layouts/common_white.blade.php（共通レイアウト「ホワイト系」）
 resources/views/layouts/common_pink.blade.php（共通レイアウト「ピンク系」）
 resources/views/weight_logs/index.blade.php(トップページ管理画面）
+resources/views/goal/goal_setting.blade.php(目標設定画面）
+
+
+---
 
 ## CSS ファイルの作成
 public/css/common_white.css(共通 CSS「ホワイト系」)
 public/css/common_pink.css(共通 CSS「ピンク系」)
 public/css/dashboard.css（トップページ管理画面）
+public/css/goal_setting.css（目標設定画面）
 
-```
+---
 
 ### 🌐 ローカル環境での確認用URL
 - アプリケーション: [http://localhost/weight_logs](http://localhost/weight_logs)
