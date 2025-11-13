@@ -118,7 +118,7 @@ php artisan storage:link
 resources/views/layouts/common_pink.blade.php（共通レイアウト「ピンク系」）
 resources/views/weight_logs/index.blade.php(トップページ管理画面）
 resources/views/goal/goal_setting.blade.php(目標設定画面）
-
+resources/views/weight_logs/search.blade.php（検索画面）
 
 ---
 
@@ -127,6 +127,7 @@ public/css/common_white.css(共通 CSS「ホワイト系」)
 public/css/common_pink.css(共通 CSS「ピンク系」)
 public/css/dashboard.css（トップページ管理画面）
 public/css/goal_setting.css（目標設定画面）
+public/css/search.css（検索画面）
 
 ---
 
