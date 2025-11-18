@@ -177,6 +177,25 @@ public/css/register_step2.css(初期目標体重登録画面)
 これにより、ユーザーは重複登録を試みた際に **「このメールアドレスはすでに登録されています」** と表示され、  
 エラー画面ではなく、フォーム上で分かりやすく修正できるようになっています。
 
+---
+
+## 認証後の遷移先について
+
+Laravelの既定では、ログイン後に `/home` にリダイレクトされる仕様となっています。しかし本アプリケーションでは `/home` ルートを使用しておらず、テスト指示書に従い `/weight_logs` をトップページとして設計しています。
+
+そのため、以下の対応を行っています：
+
+- `LoginController.php` にて `$redirectTo = '/weight_logs'` を明示
+- `RouteServiceProvider::HOME` を `/weight_logs` に変更
+- 万が一 `/home` にアクセスされた場合の保険として、`/home` → `/weight_logs` のリダイレクトルートを追加
+
+```php
+Route::get('/home', function () {
+    return redirect('/weight_logs');
+});
+ ```
+
+---
 
 ### 補足：
 `weight_target` テーブルの `current_weight` カラムについて 仕様書（テーブル定義）には `current_weight` の記載はありませんが、画面仕様（PG09 初期体重登録画面）およびバリデーション定義（FN008〜FN009）において「現在の体重」の入力項目が存在するため、整合性を保つ目的で `weight_target` テーブルに `current_weight` カラムを追加しています。
