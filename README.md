@@ -144,8 +144,12 @@ public/css/register_step2.css(初期目標体重登録画面)
 ---
 
 ### 🌐 ローカル環境での確認用URL
-- アプリケーション: [http://localhost/weight_logs](http://localhost/weight_logs)
-  → トップページ管理画面が表示されます
+- アプリケーション: [http://localhost/login](http://localhost/login)
+  → ログイン画面が表示されます
+  
+  ログイン情報（ダミーアカウント）　email: dummy@example.com
+　　　　　　　　password: password
+  
 - phpMyAdmin: [http://localhost:8080/](http://localhost:8080/)
   → DB 接続確認やテーブル内容の確認が可能です
 
@@ -213,7 +217,7 @@ Route::get('/home', function () {
 
  ---
 
- ## 認証ミドルウェアによるアクセス制限
+### 認証ミドルウェアによるアクセス制限
 
 管理画面（PG01）を含む体重ログ関連の画面は、ログイン済みのユーザーのみがアクセスできるように設計しています。
 
@@ -224,5 +228,92 @@ public function __construct()
 {
     $this->middleware('auth');
 }
+ ```
 
+---
 
+— ローカル環境をリセットしてマイグレーション＆シードを再実行する手順
+概要
+この手順は、ローカルでマウントしている MySQL データや Laravel のキャッシュ・ログを安全に削除し、クリーンな状態でマイグレーションとシードを実行するための手順です。操作は不可逆なので、必要なら事前にバックアップを必ず取得してください。
+
+前提
+あなたはプロジェクトのルートディレクトリにいること（例: ~/coachtech/laravel/weight-logs-test3）
+
+Docker / docker-compose を利用している環境を想定
+
+操作でデータは消える（バックアップを取ること）
+
+バックアップ（任意だが推奨）
+MySQL データを残したい場合はコンテナ内からダンプを取得します（例）:
+
+bash
+# mysql コンテナ名を確認してから
+docker-compose ps
+docker exec -it <mysql_container_name> bash
+mysqldump -u root -p <database_name> > /tmp/backup.sql
+# ホストへコピーする場合
+docker cp <mysql_container_name>:/tmp/backup.sql ./backup.sql
+
+手順（順に実行）
+コンテナ停止
+
+bash
+docker-compose down
+ホスト上でマウントされた MySQL データを削除（安全に所有権を付け替えてから削除）
+
+bash
+# プロジェクトルートで実行
+sudo chown -R $(id -u):$(id -g) ./docker/mysql/data
+rm -rf ./docker/mysql/data
+
+Laravel のストレージ／キャッシュをホスト側でリセット
+
+bash
+sudo chown -R $(id -u):$(id -g) storage bootstrap/cache
+chmod -R 775 storage bootstrap/cache
+コンテナ再起動（バックグラウンド）
+
+bash
+docker-compose up -d
+
+マイグレーションとシードを実行（php コンテナ内または docker-compose exec で）
+
+bash
+# ホストから
+docker-compose exec php php artisan migrate:fresh --seed
+
+# またはコンテナ内に入ってから
+docker-compose exec php bash
+php artisan migrate:fresh --seed
+
+シード確認（Tinker でユーザー存在チェック）
+
+bash
+# コンテナ内で
+php artisan tinker
+>>> \App\Models\User::where('email','dummy@example.com')->exists()
+>>> exit
+true が返ればシード成功
+
+トラブルシューティング（よくある問題と対処）
+Permission denied（storage/logs/laravel.log 等）
+
+ホスト側で:
+
+bash
+sudo chown -R $(id -u):$(id -g) storage bootstrap/cache
+chmod -R 775 storage bootstrap/cache
+コンテナ内で（root 権限時）:
+
+bash
+chown -R www-data:www-data storage bootstrap/cache
+chmod -R 775 storage bootstrap/cache
+docker-compose restart
+
+シードが効かない（ユーザーが見つからない）
+
+migrate:fresh --seed の実行ログにエラーがないか確認し、エラーがあれば全文を保存して調査する
+
+削除できないファイル（Permission denied）
+
+docker-compose down を実行後に sudo chown で所有権を変更してから rm -rf を実行する
