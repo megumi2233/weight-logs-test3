@@ -143,6 +143,26 @@ public/css/register_step2.css(初期目標体重登録画面)
 
 ---
 
+### 🗂 ER図（このプロジェクトのデータ構造）
+
+このアプリケーションのデータ構造を視覚的に把握するため、以下にER図を掲載しています。
+
+この図では、`users` テーブルを中心に、`weight_logs` テーブルと `weight_target` テーブルがリレーションで接続されています。  
+`weight_logs` はユーザーの体重記録を保持し、`weight_target` は目標体重の履歴を保持するため、いずれも `users` に対して「1対多」の関係となっています。  
+各テーブルは表形式で構成されており、主キー（PK）の役割が明示されています。
+
+![ER図](assets/weight-logs-er.png)
+
+※ 補足：
+1. 図は draw.io（diagrams.net）にて作成し、PNG形式で保存しています。  
+2. 元データは `src/weight-logs-er.drawio` にて編集可能です。  
+3. PNGファイルは `assets/weight-logs-er.png` に保存されています。  
+   → READMEではこの画像を参照しています。  
+4. 編集には [draw.io（diagrams.net）](https://app.diagrams.net/) を使用してください。  
+　 ローカルアプリまたはブラウザ版のどちらでも編集可能です。  
+5. ER図の更新手順：drawioで編集 → PNG再出力 → assetsに上書き保存 → README確認  
+   ※GitHub上で画像が更新されない場合は、Shift+再読み込み（Ctrl+Shift+R）などでキャッシュを強制クリアしてください。
+
 ### 🌐 ローカル環境での確認用URL
 - アプリケーション: [http://localhost/login](http://localhost/login)
   → ログイン画面が表示されます
@@ -217,7 +237,7 @@ Route::get('/home', function () {
 
  ---
 
-### 認証ミドルウェアによるアクセス制限と一時的な解除について
+### 認証ミドルウェアによるアクセス制限について
 
 管理画面（PG01）を含む体重ログ関連の画面は、ログイン済みのユーザーのみがアクセスできるように設計しています。
 
@@ -228,23 +248,6 @@ public function __construct()
 {
     $this->middleware('auth');
 }
- ```
-
-`ただし、/weight_logs/goal_setting` の画面については **ログイン済みでも `404 Not Found` になる**ため、レビュー確認用として一時的に `auth` ミドルウェアを解除しています。
-
-これは Laravel のルーティング仕様により、`/weight_logs/{weightLog}` のルートが先に評価されることで、`goal_setting` が存在しない ID として解釈されてしまうためです。
-
-そのためレビュー確認用として、一時的に `auth` ミドルウェアを解除し、画面表示と更新処理を可能にしています。 
-
-本来はログイン後に表示される画面ですが、提出時点での動作確認を優先し、画面表示と更新処理を可能にするための暫定対応です。
-
-提出後は `auth` ミドルウェアを元に戻すことで、正しい認証制御が可能です。
-  
-Laravel のルートを変更した場合は、以下を必ず実行してください：
-
-```bash
-php artisan route:clear
-php artisan config:clear
  ```
 
 ---
