@@ -317,3 +317,86 @@ migrate:fresh --seed の実行ログにエラーがないか確認し、エラ�
 削除できないファイル（Permission denied）
 
 docker-compose down を実行後に sudo chown で所有権を変更してから rm -rf を実行する
+
+cat >> README.md <<'README_BLOCK'
+
+### ローカル環境リセット — マイグレーション＆シード再実行手順
+
+この手順は、ローカルでマウントしている MySQL データや Laravel のキャッシュ・ログを安全に削除し、クリーンな状態でマイグレーションとシードを実行するための手順です。操作は不可逆です。必要なら事前にバックアップを必ず取得してください。
+
+---
+
+<details>
+<summary>前提（クリックで展開）</summary>
+
+- プロジェクトのルートディレクトリにいること（例: ~/coachtech/laravel/weight-logs-test3）  
+- Docker / docker-compose を利用している環境を想定  
+- この操作でデータは消えます（バックアップ必須）  
+</details>
+
+---
+
+<details>
+<summary>バックアップ（任意だが推奨）</summary>
+
+- MySQL データを残したい場合はコンテナ内からダンプを取得します（例）:
+
+```bash
+# mysql コンテナ名を確認してから
+docker-compose ps
+docker exec -it <mysql_container_name> bash
+mysqldump -u root -p <database_name> > /tmp/backup.sql
+
+# ホストへコピーする場合
+docker cp <mysql_container_name>:/tmp/backup.sql ./backup.sql
+
+</details>
+#!/usr/bin/env bash
+set -euo pipefail
+
+# 確認プロンプト
+read -p "この操作はデータを消します。本当に続行しますか？ (yes/no): " confirm
+if [ "$confirm" != "yes" ]; then
+  echo "中止しました"
+  exit 1
+fi
+
+# 1. コンテナ停止
+echo "1/7: docker-compose down を実行します..."
+docker-compose down
+
+# 2. ホスト上でマウントされた MySQL データを削除（安全に所有権を付け替えてから削除）
+MYSQL_DATA_DIR="./docker/mysql/data"
+if [ -d "$MYSQL_DATA_DIR" ]; then
+  echo "2/7: 所有権を変更して $MYSQL_DATA_DIR を削除します..."
+  sudo chown -R "$(id -u):$(id -g)" "$MYSQL_DATA_DIR"
+  rm -rf "$MYSQL_DATA_DIR"
+else
+  echo "2/7: $MYSQL_DATA_DIR が見つかりません。スキップします。"
+fi
+
+# 3. Laravel のストレージ／キャッシュをホスト側でリセット
+echo "3/7: storage と bootstrap/cache の所有権とパーミッションを修正します..."
+sudo chown -R "$(id -u):$(id -g)" storage bootstrap/cache || true
+chmod -R 775 storage bootstrap/cache || true
+
+# 4. コンテナ再起動（バックグラウンド）
+echo "4/7: docker-compose up -d を実行します..."
+docker-compose up -d
+
+# 5. マイグレーションとシードを実行（php コンテナ経由）
+echo "5/7: php artisan migrate:fresh --seed を実行します..."
+docker-compose exec php php artisan migrate:fresh --seed
+
+# 6. シード確認（Tinker を使って存在チェック）
+echo "6/7: シード結果を確認します（dummy@example.com の存在をチェック）..."
+EXISTS=$(docker-compose exec -T php php artisan tinker --execute="echo \App\Models\User::where('email','dummy@example.com')->exists() ? 'true' : 'false';")
+echo "ユーザー存在チェック: $EXISTS"
+
+# 7. 最後の案内
+echo "7/7: 完了しました。ブラウザでログイン画面を確認してください（例: http://localhost/login）。"
+echo "ダミー認証: email=dummy@example.com password=password"
+
+exit 0
+
+
