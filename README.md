@@ -143,6 +143,59 @@ public/css/register_step2.css(初期目標体重登録画面)
 
 ---
 
+### 🛠 使用技術（この例で使われている環境）
+- **PHP 8.2**  
+- **Laravel 10.x**  
+- **MySQL 8.0.x**  
+- **Docker（開発環境構築）**  
+  - nginx（Webサーバ）  
+  - php（アプリケーション）  
+  - mysql（データベース）  
+  - phpmyadmin（DB管理ツール）  
+- **フロントエンドビルド**: Vite（Laravel公式推奨のビルドツール）
+
+---
+
+### 📋 テーブル設計
+## usersテーブル
+
+| カラム名     | 型               | PRIMARY KEY | NOT NULL | FOREIGN KEY |
+|--------------|------------------|-------------|-----------|--------------|
+| id           | bigint unsigned  | ○           | ○         |              |
+| name         | varchar(255)     |             | ○         |              |
+| email        | varchar(255)     |             | ○         |              |
+| password     | varchar(255)     |             | ○         |              |
+| created_at   | timestamp        |             |           |              |
+| updated_at   | timestamp        |             |           |              |
+
+
+##　weight_logsテーブル
+
+| カラム名         | 型               | PRIMARY KEY | NOT NULL | FOREIGN KEY |
+|------------------|------------------|-------------|-----------|--------------|
+| id               | bigint unsigned  | ○           | ○         |              |
+| user_id          | bigint unsigned  |             | ○         | ○            |
+| date             | date             |             | ○         |              |
+| weight           | decimal(4,1)     |             | ○         |              |
+| calories         | int              |             |           |              |
+| exercise_time    | time             |             |           |              |
+| exercise_content | text             |             |           |              |
+| created_at       | timestamp        |             |           |              |
+| updated_at       | timestamp        |             |           |              |
+
+##　weight_targetテーブル
+
+| カラム名       | 型               | PRIMARY KEY | NOT NULL | FOREIGN KEY |
+|----------------|------------------|-------------|-----------|--------------|
+| id             | bigint unsigned  | ○           | ○         |              |
+| user_id        | bigint unsigned  |             | ○         | ○            |
+| target_weight  | decimal(4,1)     |             | ○         |              |
+| current_weight | decimal(4,1)     |             |           |              |
+| created_at     | timestamp        |             |           |              |
+| updated_at     | timestamp        |             |           |              |
+
+---
+
 ### 🗂 ER図（このプロジェクトのデータ構造）
 
 このアプリケーションのデータ構造を視覚的に把握するため、以下にER図を掲載しています。
@@ -155,13 +208,15 @@ public/css/register_step2.css(初期目標体重登録画面)
 
 ※ 補足：
 1. 図は draw.io（diagrams.net）にて作成し、PNG形式で保存しています。  
-2. 元データは `src/weight-logs-er.drawio` にて編集可能です。  
+2. 元データは `weight-logs-er.drawio` にて編集可能です。  
 3. PNGファイルは `assets/weight-logs-er.png` に保存されています。  
    → READMEではこの画像を参照しています。  
 4. 編集には [draw.io（diagrams.net）](https://app.diagrams.net/) を使用してください。  
 　 ローカルアプリまたはブラウザ版のどちらでも編集可能です。  
 5. ER図の更新手順：drawioで編集 → PNG再出力 → assetsに上書き保存 → README確認  
    ※GitHub上で画像が更新されない場合は、Shift+再読み込み（Ctrl+Shift+R）などでキャッシュを強制クリアしてください。
+
+---
 
 ### 🌐 ローカル環境での確認用URL
 - アプリケーション: [http://localhost/login](http://localhost/login)
@@ -251,173 +306,5 @@ public function __construct()
  ```
 
 ---
-
-— ローカル環境をリセットしてマイグレーション＆シードを再実行する手順
-概要
-この手順は、ローカルでマウントしている MySQL データや Laravel のキャッシュ・ログを安全に削除し、クリーンな状態でマイグレーションとシードを実行するための手順です。操作は不可逆なので、必要なら事前にバックアップを必ず取得してください。
-
-前提
-あなたはプロジェクトのルートディレクトリにいること（例: ~/coachtech/laravel/weight-logs-test3）
-
-Docker / docker-compose を利用している環境を想定
-
-操作でデータは消える（バックアップを取ること）
-
-バックアップ（任意だが推奨）
-MySQL データを残したい場合はコンテナ内からダンプを取得します（例）:
-
-bash
-# mysql コンテナ名を確認してから
-docker-compose ps
-docker exec -it <mysql_container_name> bash
-mysqldump -u root -p <database_name> > /tmp/backup.sql
-# ホストへコピーする場合
-docker cp <mysql_container_name>:/tmp/backup.sql ./backup.sql
-
-手順（順に実行）
-コンテナ停止
-
-bash
-docker-compose down
-ホスト上でマウントされた MySQL データを削除（安全に所有権を付け替えてから削除）
-
-bash
-# プロジェクトルートで実行
-sudo chown -R $(id -u):$(id -g) ./docker/mysql/data
-rm -rf ./docker/mysql/data
-
-Laravel のストレージ／キャッシュをホスト側でリセット
-
-bash
-sudo chown -R $(id -u):$(id -g) storage bootstrap/cache
-chmod -R 775 storage bootstrap/cache
-コンテナ再起動（バックグラウンド）
-
-bash
-docker-compose up -d
-
-マイグレーションとシードを実行（php コンテナ内または docker-compose exec で）
-
-bash
-# ホストから
-docker-compose exec php php artisan migrate:fresh --seed
-
-# またはコンテナ内に入ってから
-docker-compose exec php bash
-cd /var/www/html
-php artisan migrate:fresh --seed
-
-シード確認（Tinker でユーザー存在チェック）
-
-bash
-# コンテナ内で
-php artisan tinker
->>> \App\Models\User::where('email','dummy@example.com')->exists()
->>> exit
-true が返ればシード成功
-
-トラブルシューティング（よくある問題と対処）
-Permission denied（storage/logs/laravel.log 等）
-
-ホスト側で:
-
-bash
-sudo chown -R $(id -u):$(id -g) storage bootstrap/cache
-chmod -R 775 storage bootstrap/cache
-コンテナ内で（root 権限時）:
-
-bash
-chown -R www-data:www-data storage bootstrap/cache
-chmod -R 775 storage bootstrap/cache
-docker-compose restart
-
-シードが効かない（ユーザーが見つからない）
-
-migrate:fresh --seed の実行ログにエラーがないか確認し、エラーがあれば全文を保存して調査する
-
-削除できないファイル（Permission denied）
-
-docker-compose down を実行後に sudo chown で所有権を変更してから rm -rf を実行する
-
-cat >> README.md <<'README_BLOCK'
-
-### ローカル環境リセット — マイグレーション＆シード再実行手順
-
-この手順は、ローカルでマウントしている MySQL データや Laravel のキャッシュ・ログを安全に削除し、クリーンな状態でマイグレーションとシードを実行するための手順です。操作は不可逆です。必要なら事前にバックアップを必ず取得してください。
-
----
-
-<details>
-<summary>前提（クリックで展開）</summary>
-
-- プロジェクトのルートディレクトリにいること（例: ~/coachtech/laravel/weight-logs-test3）  
-- Docker / docker-compose を利用している環境を想定  
-- この操作でデータは消えます（バックアップ必須）  
-</details>
-
----
-
-<details>
-<summary>バックアップ（任意だが推奨）</summary>
-
-- MySQL データを残したい場合はコンテナ内からダンプを取得します（例）:
-
-```bash
-# mysql コンテナ名を確認してから
-docker-compose ps
-docker exec -it <mysql_container_name> bash
-mysqldump -u root -p <database_name> > /tmp/backup.sql
-
-# ホストへコピーする場合
-docker cp <mysql_container_name>:/tmp/backup.sql ./backup.sql
-
-</details>
-#!/usr/bin/env bash
-set -euo pipefail
-
-# 確認プロンプト
-read -p "この操作はデータを消します。本当に続行しますか？ (yes/no): " confirm
-if [ "$confirm" != "yes" ]; then
-  echo "中止しました"
-  exit 1
-fi
-
-# 1. コンテナ停止
-echo "1/7: docker-compose down を実行します..."
-docker-compose down
-
-# 2. ホスト上でマウントされた MySQL データを削除（安全に所有権を付け替えてから削除）
-MYSQL_DATA_DIR="./docker/mysql/data"
-if [ -d "$MYSQL_DATA_DIR" ]; then
-  echo "2/7: 所有権を変更して $MYSQL_DATA_DIR を削除します..."
-  sudo chown -R "$(id -u):$(id -g)" "$MYSQL_DATA_DIR"
-  rm -rf "$MYSQL_DATA_DIR"
-else
-  echo "2/7: $MYSQL_DATA_DIR が見つかりません。スキップします。"
-fi
-
-# 3. Laravel のストレージ／キャッシュをホスト側でリセット
-echo "3/7: storage と bootstrap/cache の所有権とパーミッションを修正します..."
-sudo chown -R "$(id -u):$(id -g)" storage bootstrap/cache || true
-chmod -R 775 storage bootstrap/cache || true
-
-# 4. コンテナ再起動（バックグラウンド）
-echo "4/7: docker-compose up -d を実行します..."
-docker-compose up -d
-
-# 5. マイグレーションとシードを実行（php コンテナ経由）
-echo "5/7: php artisan migrate:fresh --seed を実行します..."
-docker-compose exec php php artisan migrate:fresh --seed
-
-# 6. シード確認（Tinker を使って存在チェック）
-echo "6/7: シード結果を確認します（dummy@example.com の存在をチェック）..."
-EXISTS=$(docker-compose exec -T php php artisan tinker --execute="echo \App\Models\User::where('email','dummy@example.com')->exists() ? 'true' : 'false';")
-echo "ユーザー存在チェック: $EXISTS"
-
-# 7. 最後の案内
-echo "7/7: 完了しました。ブラウザでログイン画面を確認してください（例: http://localhost/login）。"
-echo "ダミー認証: email=dummy@example.com password=password"
-
-exit 0
 
 
