@@ -284,6 +284,7 @@ docker-compose exec php php artisan migrate:fresh --seed
 
 # またはコンテナ内に入ってから
 docker-compose exec php bash
+cd /var/www/html
 php artisan migrate:fresh --seed
 
 シード確認（Tinker でユーザー存在チェック）
