@@ -231,6 +231,8 @@ php artisan storage:link
 　 ローカルアプリまたはブラウザ版のどちらでも編集可能です。  
 5. ER図の更新手順：drawioで編集 → PNG再出力 → assetsに上書き保存 → README確認  
    ※GitHub上で画像が更新されない場合は、キャッシュをクリアしてください。
+   
+※このER図は、要件シートの「ER図欄」に対応した内容です。GitHub提出形式のため、READMEにて掲載しています。
 
 ---
 
