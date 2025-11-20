@@ -1,0 +1,82 @@
+.register-wrapper {
+    background-color: transparent;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+.logo {
+    font-size: 4rem;
+    font-weight: bold;
+    color: #ff69b4;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.register-heading {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.step-title {
+    font-size: 1.2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.weight-form .form-group {
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.weight-form label {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.weight-form input[type="text"] {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.submit-button {
+    background: linear-gradient(to right,#8e44ad,#ff69b4);
+    color: white;
+    font-weight: bold;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 50%;
+    max-width: 600px;
+    margin: 2rem auto 0;
+    display: block;
+    text-align: center;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 0.3rem;
+}
+
+.input-with-unit {
+    max-width: 600px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.input-with-unit input[type="text"] {
+    width: 100%;
+}
+
+.input-with-unit .unit {
+    margin-left: 0.5rem;
+    font-weight: bold;
+}

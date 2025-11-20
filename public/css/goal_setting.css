@@ -1,0 +1,100 @@
+.goal-setting {
+    max-width: 480px;
+    margin: 12rem auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: 'Helvetica Neue', sans-serif;
+}
+
+.dashboard-title {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    color: #333;
+}
+
+.goal-form label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: #555;
+}
+
+.goal-form input[type="number"] {
+    width: 100%;
+    padding: 0.6rem;
+    font-size: 1.1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+}
+
+.input-with-unit {
+    display: flex;
+    align-items: center;
+    width: 100%
+}
+
+.input-with-unit input {
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0;
+    padding: 12px 16px;
+    font-size: 1.1em;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-right: 8px;
+}
+
+.unit-label {
+    font-size: 1em;
+    color: #555;
+    white-space: nowrap;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+}
+
+.btn {
+    width: 160px;
+    padding: 0.6rem 1.5rem;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+}
+
+.btn-secondary {
+    background-color: #ccc;
+    color: #333;
+}
+
+.btn-primary {
+    background: linear-gradient(to right, #6a11cb, #ff6ec4);
+    color: #fff;
+    border: none;
+}
+
+.alert-success {
+    background-color: #e6ffed;
+    border: 1px solid #28a745;
+    color: #155724;
+    padding: 10px 15px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.error {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 5px;
+}

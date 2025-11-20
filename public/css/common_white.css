@@ -1,0 +1,59 @@
+/* ヘッダー全体 */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    padding: 10px 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* ロゴ部分 */
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #cc66cc;
+}
+
+/* ナビゲーション部分 */
+.header-nav {
+    display: flex;
+    gap: 10px;
+}
+
+/* ボタン共通 */
+.header-nav .btn {
+    padding: 6px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+}
+
+/* 目標体重設定・ログアウトボタン */
+.header-nav .btn-goal,
+.header-nav .btn-logout {
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #333;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.header-nav .btn-goal:hover,
+.header-nav .btn-logout:hover {
+    background-color: #d9d9d9;
+}
+
+/* フォーカス（アクセシビリティ向上） */
+.header-nav .btn:focus {
+    outline: 2px solid #8888ff;
+    outline-offset: 2px;
+}

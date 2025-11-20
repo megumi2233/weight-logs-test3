@@ -1,0 +1,29 @@
+body.pink-bg {
+    margin: 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    background: linear-gradient(to bottom right,
+            #DED2F6 0%,
+            #FE9DBF 30%,
+            #FFD3D4 70%,
+            #FFCAC4 100%);
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.main-content {
+    background: #fff;
+    border-radius: 8px;
+    width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}

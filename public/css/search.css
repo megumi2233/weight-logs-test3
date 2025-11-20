@@ -1,0 +1,130 @@
+/* 検索画面全体 */
+.dashboard {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* サマリー */
+.summary {
+    display: flex;
+    justify-content: space-around;
+    background: #f9f9f9;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.summary-item .label {
+    font-weight: bold;
+    color: #555;
+}
+
+.summary-item .value {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #000;
+}
+
+/* 検索フォーム */
+.search-form {
+    margin: 1rem 0;
+    text-align: center;
+}
+
+.search-form input {
+    padding: 0.3rem;
+    margin: 0 0.5rem;
+}
+
+/* ボタン */
+.btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    border: none;
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-search {
+    background-color: #555;
+    color: #fff;
+}
+
+.btn-search:hover {
+    background-color: #444;
+}
+
+.btn-reset {
+    background-color: #ccc;
+    color: #333;
+}
+
+.btn-reset:hover {
+    background-color: #bbb;
+}
+
+.btn-add {
+    background: linear-gradient(90deg, #6a11cb 0%, #ff6ec4 100%);
+    color: #fff;
+}
+
+.btn-add:hover {
+    filter: brightness(0.95);
+}
+
+/* テーブル */
+.weight-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.weight-table th,
+.weight-table td {
+    border: 1px solid #ddd;
+    padding: 0.5rem;
+    text-align: center;
+}
+
+.weight-table th {
+    background: #f0f0f0;
+}
+
+/* ページネーション */
+.pagination {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding-left: 0;
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.pagination li {
+    margin: 0 4px;
+}
+
+.pagination a,
+.pagination span {
+    margin: 0 0.3rem;
+    text-decoration: none;
+    color: #333;
+    display: block;
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* アクティブページ */
+.pagination .active span {
+    background: linear-gradient(90deg, #6a11cb 0%, #ff6ec4 100%);
+    color: #fff;
+    border: none;
+}
