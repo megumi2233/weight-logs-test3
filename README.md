@@ -220,12 +220,12 @@ php artisan storage:link
 `weight_logs` はユーザーの体重記録を保持し、`weight_target` は目標体重の履歴を保持するため、いずれも `users` に対して「1対多」の関係となっています。  
 各テーブルは表形式で構成されており、主キー（PK）の役割が明示されています。
 
-![ER図](assets/weight-logs-er.png)
+![ER図](assets/weight-logs-test3-er.png)
 
 ※ 補足：
 1. 図は draw.io（diagrams.net）にて作成し、PNG形式で保存しています。  
-2. 元データは `weight-logs-er.drawio` にて編集可能です。  
-3. PNGファイルは `assets/weight-logs-er.png` に保存されています。  
+2. 元データは `weight-logs-test3-er.drawio` にて編集可能です。  
+3. PNGファイルは `assets/weight-logs-test3-er.png` に保存されています。  
    → READMEではこの画像を参照しています。  
 4. 編集には [draw.io（diagrams.net）](https://app.diagrams.net/) を使用してください。  
 　 ローカルアプリまたはブラウザ版のどちらでも編集可能です。  
