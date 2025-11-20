@@ -8,7 +8,7 @@
 
 ### 🛠️ 環境構築手順
 
-## 1. リポジトリの設定
+#### 1. リポジトリの設定
 
 このリポジトリを clone してください。
 
@@ -18,7 +18,7 @@ git clone https://github.com/megumi2233/weight-logs-test3.git
 cd weight-logs-test3
 ```
 
-## 2. Docker の設定
+#### 2. Docker の設定
 
 ローカル環境に必要なサービス（nginx, php, mysql, phpMyAdmin）を Docker で構築・起動します。
 
@@ -32,7 +32,7 @@ docker-compose up -d --build
 
 コンテナが立ち上がれば成功です。
 
-## 3. Laravel のパッケージのインストール
+#### 3. Laravel のパッケージのインストール
 
 Laravel の動作に必要な依存パッケージをインストールします。
 
@@ -42,7 +42,7 @@ cd /var/www/html
 composer install
 ```
 
-## 4. .env ファイルの作成
+#### 4. .env ファイルの作成
 
 Laravel の環境設定を行うために、`.env.example` をコピーして `.env` ファイルを作成します。
 
@@ -54,7 +54,7 @@ cp .env.example .env
 
 .env の DB 設定を以下のように修正して、DB 接続情報や APP_KEY などの環境変数を設定します。
 
-```Env
+```ini
 DB_CONNECTION=mysql
 DB_HOST=mysql
 DB_PORT=3306
@@ -63,7 +63,7 @@ DB_USERNAME=laravel_user
 DB_PASSWORD=laravel_pass
 ```
 
-## 5. アプリケーションキーの生成
+#### 5. アプリケーションキーの生成
 
 アプリケーションを起動するためのキーを生成します。
 
@@ -73,7 +73,7 @@ php artisan key:generate
 
 ※このコマンドは **php コンテナ内のプロジェクトルート**で実行してください。
 
-### php コンテナに入ってプロジェクトルートへ移動する方法
+##### php コンテナに入ってプロジェクトルートへ移動する方法
 
 ```bash
 docker-compose exec php bash
@@ -82,7 +82,7 @@ cd /var/www/html
 
 ※ コンテナから抜けるときは exit を入力してください。
 
-## 6. マイグレーションの実行
+#### 6. マイグレーションの実行
 
 データベースにテーブルを作成します。
 
@@ -92,7 +92,7 @@ cd /var/www/html
 php artisan migrate
 ```
 
-## 7. シーディングの実行
+#### 7. シーディングの実行
 
 初期データを投入します。
 
@@ -102,9 +102,9 @@ php artisan migrate
 php artisan db:seed
 ```
 
-## 8. ストレージのシンボリックリンク作成
+#### 8. ストレージのシンボリックリンク作成
 
-画像やファイルを storage/app/public から公開できるようにリンクを作成します。
+画像(詳細画面にあるゴミ箱マーク)やファイルを storage/app/public から公開できるようにリンクを作成します。
 
 このコマンドも **php コンテナ内のプロジェクトルート**で実行してください。
 
@@ -113,33 +113,49 @@ php artisan storage:link
 ```
 ---
 
-###  View ファイルの作成
- resources/views/layouts/common_white.blade.php（共通レイアウト「ホワイト系」）
-resources/views/layouts/common_pink.blade.php（共通レイアウト「ピンク系」）
-resources/views/weight_logs/index.blade.php(トップページ管理画面）
-resources/views/goal/goal_setting.blade.php(目標設定画面）
-resources/views/weight_logs/search.blade.php（検索画面）
-resources/views/weight_logs/show.blade.php(体重詳細画面)
-resources/views/weight_logs/create.blade.php(体重登録画面)
-resources/views/weight_logs/modal_create.blade.php(体重登録画面　モーダル表示時)
-resources/views/register/step1.blade.php（会員登録画面）
-resources/views/auth/login.blade.php（ログイン画面）
-resources/views/register/step2.blade.php(初期目標体重登録画面)
+### 🧩 View ファイルの作成
+
+#### 共通レイアウト
+- resources/views/layouts/common_white.blade.php（ホワイト系）
+- resources/views/layouts/common_pink.blade.php（ピンク系）
+
+#### 体重ログ関連
+- resources/views/weight_logs/index.blade.php（トップページ管理画面）
+- resources/views/weight_logs/search.blade.php（検索画面）
+- resources/views/weight_logs/show.blade.php（体重詳細画面）
+- resources/views/weight_logs/create.blade.php（体重登録画面）
+- resources/views/weight_logs/modal_create.blade.php（体重登録画面 モーダル表示時）
+
+#### 会員登録・認証関連
+- resources/views/register/step1.blade.php（会員登録画面）
+- resources/views/auth/login.blade.php（ログイン画面）
+- resources/views/register/step2.blade.php（初期目標体重登録画面）
+
+#### 目標設定
+- resources/views/goal/goal_setting.blade.php（目標設定画面）
 
 ---
 
-## CSS ファイルの作成
-public/css/common_white.css(共通 CSS「ホワイト系」)
-public/css/common_pink.css(共通 CSS「ピンク系」)
-public/css/dashboard.css（トップページ管理画面）
-public/css/goal_setting.css（目標設定画面）
-public/css/search.css（検索画面）
-public/css/show.css(体重詳細画面)
-public/css/weight_create.css(体重登録画面)
-public/css/weight_modal.css(体重登録画面　モーダル表示時)
-public/css/register_step1.css（会員登録画面）
-public/css/login.css（ログイン画面）
-public/css/register_step2.css(初期目標体重登録画面)
+### 🎨 CSS ファイルの作成
+
+#### 共通レイアウト
+- public/css/common_white.css（ホワイト系）
+- public/css/common_pink.css（ピンク系）
+
+#### 体重ログ関連
+- public/css/dashboard.css（トップページ管理画面）
+- public/css/search.css（検索画面）
+- public/css/show.css（体重詳細画面）
+- public/css/weight_create.css（体重登録画面）
+- public/css/weight_modal.css（体重登録画面 モーダル表示時）
+
+#### 会員登録・認証関連
+- public/css/register_step1.css（会員登録画面）
+- public/css/login.css（ログイン画面）
+- public/css/register_step2.css（初期目標体重登録画面）
+
+#### 目標設定
+- public/css/goal_setting.css（目標設定画面）
 
 ---
 
@@ -169,12 +185,12 @@ public/css/register_step2.css(初期目標体重登録画面)
 | updated_at   | timestamp        |             |           |              |
 
 
-##　weight_logsテーブル
+## weight_logsテーブル
 
 | カラム名         | 型               | PRIMARY KEY | NOT NULL | FOREIGN KEY |
 |------------------|------------------|-------------|-----------|--------------|
 | id               | bigint unsigned  | ○           | ○         |              |
-| user_id          | bigint unsigned  |             | ○         | ○            |
+| user_id          | bigint unsigned  |             | ○         | users.id     |
 | date             | date             |             | ○         |              |
 | weight           | decimal(4,1)     |             | ○         |              |
 | calories         | int              |             |           |              |
@@ -183,12 +199,12 @@ public/css/register_step2.css(初期目標体重登録画面)
 | created_at       | timestamp        |             |           |              |
 | updated_at       | timestamp        |             |           |              |
 
-##　weight_targetテーブル
+## weight_targetテーブル
 
 | カラム名       | 型               | PRIMARY KEY | NOT NULL | FOREIGN KEY |
 |----------------|------------------|-------------|-----------|--------------|
 | id             | bigint unsigned  | ○           | ○         |              |
-| user_id        | bigint unsigned  |             | ○         | ○            |
+| user_id        | bigint unsigned  |             | ○         |  users.id    |
 | target_weight  | decimal(4,1)     |             | ○         |              |
 | current_weight | decimal(4,1)     |             |           |              |
 | created_at     | timestamp        |             |           |              |
@@ -214,7 +230,7 @@ public/css/register_step2.css(初期目標体重登録画面)
 4. 編集には [draw.io（diagrams.net）](https://app.diagrams.net/) を使用してください。  
 　 ローカルアプリまたはブラウザ版のどちらでも編集可能です。  
 5. ER図の更新手順：drawioで編集 → PNG再出力 → assetsに上書き保存 → README確認  
-   ※GitHub上で画像が更新されない場合は、Shift+再読み込み（Ctrl+Shift+R）などでキャッシュを強制クリアしてください。
+   ※GitHub上で画像が更新されない場合は、キャッシュをクリアしてください。
 
 ---
 
@@ -222,15 +238,19 @@ public/css/register_step2.css(初期目標体重登録画面)
 - アプリケーション: [http://localhost/login](http://localhost/login)
   → ログイン画面が表示されます
   
-  ログイン情報（ダミーアカウント）　email: dummy@example.com
-　　　　　　　　password: password
+#### ログイン情報（ダミーアカウント）
+
+```ini
+email: dummy@example.com
+password: password
+```
   
 - phpMyAdmin: [http://localhost:8080/](http://localhost:8080/)
   → DB 接続確認やテーブル内容の確認が可能です
 
 ---
 
-### 会員登録時のメールアドレス制約について
+### 🛡️ 会員登録時のメールアドレス制約について
 
 - `users` テーブルの `email` カラムには **ユニーク制約** を付与しています。  
   - Laravelの認証機能ではメールアドレスをキーにログインするため、同じメールアドレスを複数ユーザーに許可すると認証判定ができなくなるためです。  
@@ -258,7 +278,7 @@ public/css/register_step2.css(初期目標体重登録画面)
 
 ---
 
-## 認証後の遷移先について
+### 🔐 認証後の遷移先について
 
 Laravelの既定では、ログイン後に `/home` にリダイレクトされる仕様となっています。しかし本アプリケーションでは `/home` ルートを使用しておらず、テスト指示書に従い `/weight_logs` をトップページとして設計しています。
 
@@ -272,18 +292,19 @@ Laravelの既定では、ログイン後に `/home` にリダイレクトされ�
 Route::get('/home', function () {
     return redirect('/weight_logs');
 });
- ```
+```
 
 ---
 
-### current_weight カラム追加の設計意図：
+### 🧮 current_weight カラム追加の設計意図
 `weight_target` テーブルの `current_weight` カラムについて 仕様書（テーブル定義）には `current_weight` の記載はありませんが、画面仕様（PG09 初期体重登録画面）およびバリデーション定義（FN008〜FN009）において「現在の体重」の入力項目が存在するため、整合性を保つ目的で `weight_target` テーブルに `current_weight` カラムを追加しています。
+
 このカラムは以下の目的で使用されます： 
 - STEP2画面（初期目標体重登録画面）でユーザーが入力した「現在の体重」の保存先として使用
-- 管理画面（PG01）上部の「最新体重」と「目標まで」（最新体重 - 目標体重）の表示に使用
-  
-  （登録初期時に使用します。
-  　管理画面の「最新体重」を表示する際に、weight_logs が空なら weight_target の current_weight を使い、weight_logs にデータがあるなら最新の日付の weight を使います。）
+- 管理画面（PG01）上部の「最新体重」と「目標まで」（最新体重 - 目標体重）の表示に使用 
+- 登録初期時に使用  
+ - weight_logs が空なら weight_target.current_weight を使用  
+ - weight_logs にデータがある場合は最新の日付の weight を使用
 - 将来的に「初期体重 → 最新体重 → 目標体重」の進捗表示やグラフ描画に活用可能
 - 画面仕様とDB設計の対応関係を明確にし、レビュー時の混乱を防止
   
@@ -292,7 +313,7 @@ Route::get('/home', function () {
 
  ---
 
-### 認証ミドルウェアによるアクセス制限について
+### 🚧 認証ミドルウェアによるアクセス制限について
 
 管理画面（PG01）を含む体重ログ関連の画面は、ログイン済みのユーザーのみがアクセスできるように設計しています。
 
@@ -303,8 +324,8 @@ public function __construct()
 {
     $this->middleware('auth');
 }
- ```
+```
 
----
+以上が本アプリケーションの仕様です。提出物は以上となりますので、ご確認のほどよろしくお願いいたします。
 
 
