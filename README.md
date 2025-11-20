@@ -40,6 +40,7 @@ Laravel の動作に必要な依存パッケージをインストールします
 docker-compose exec php bash
 cd /var/www/html
 composer install
+exit
 ```
 
 #### 4. .env ファイルの作成
