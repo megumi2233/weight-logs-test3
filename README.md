@@ -113,20 +113,6 @@ php artisan db:seed
 php artisan storage:link
 ```
 
-## 補足
-ログイン画面が表示されないなど、`storage/logs` や `storage/framework/sessions` が存在しないことが原因で問題が起きる場合は、以下のコマンドでディレクトリを作成してください。
-
-```bash
-docker-compose exec php bash
-cd /var/www/html
-mkdir -p storage/logs
-mkdir -p storage/framework/sessions
-mkdir -p storage/framework/views
-mkdir -p storage/framework/cache
-chown -R www-data:www-data storage
-chmod -R 775 storage
-```
-
 ---
 
 ### 🧩 View ファイルの作成
@@ -265,6 +251,20 @@ password: password
   
 - phpMyAdmin: [http://localhost:8080/](http://localhost:8080/)
   → DB 接続確認やテーブル内容の確認が可能です
+
+## 補足
+ログイン画面が表示されないなど、`storage/logs` や `storage/framework/sessions` が存在しないことが原因で問題が起きる場合は、以下のコマンドでディレクトリを作成してください。
+
+```bash
+docker-compose exec php bash
+cd /var/www/html
+mkdir -p storage/logs
+mkdir -p storage/framework/sessions
+mkdir -p storage/framework/views
+mkdir -p storage/framework/cache
+chown -R www-data:www-data storage
+chmod -R 775 storage
+```
 
 ---
 
