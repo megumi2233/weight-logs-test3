@@ -103,7 +103,21 @@ php artisan migrate
 php artisan db:seed
 ```
 
-#### 8. ストレージのシンボリックリンク作成
+#### 8. 初回セットアップ
+クローン直後は `storage` 配下のディレクトリがないためエラーが出る場合があります。以下のコマンドを実行してください。
+
+このコマンドも **php コンテナ内のプロジェクトルート**で実行してください。
+
+```bash
+mkdir -p storage/logs
+mkdir -p storage/framework/sessions
+mkdir -p storage/framework/views
+mkdir -p storage/framework/cache
+chown -R www-data:www-data storage
+chmod -R 775 storage
+```
+
+#### 9. ストレージのシンボリックリンク作成
 
 画像(詳細画面にあるゴミ箱マーク)やファイルを storage/app/public から公開できるようにリンクを作成します。
 
