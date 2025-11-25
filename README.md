@@ -109,8 +109,6 @@ php artisan db:seed
 このコマンドも **php コンテナ内のプロジェクトルート**で実行してください。
 
 ```bash
-mkdir -p storage/logs
-mkdir -p storage/framework/sessions
 mkdir -p storage/framework/views
 mkdir -p storage/framework/cache
 chown -R www-data:www-data storage
@@ -267,18 +265,9 @@ password: password
   → DB 接続確認やテーブル内容の確認が可能です
 
 ## 補足
-ログイン画面が表示されないなど、`storage/logs` や `storage/framework/sessions` が存在しないことが原因で問題が起きる場合は、以下のコマンドでディレクトリを作成してください。
-
-```bash
-docker-compose exec php bash
-cd /var/www/html
-mkdir -p storage/logs
-mkdir -p storage/framework/sessions
-mkdir -p storage/framework/views
-mkdir -p storage/framework/cache
-chown -R www-data:www-data storage
-chmod -R 775 storage
-```
+このプロジェクトでは、`storage/logs` や `storage/framework/sessions` ディレクトリを GitHub 上に保持するために `.gitkeep` ファイルを配置しています。  
+Laravel の標準 `.gitignore` により中身のログやセッションファイルは無視されますが、空ディレクトリを残すことで、クローン後すぐに正しく動作するようにしています。  
+また、これによりクローン直後でも必要なディレクトリ構造が保証され、環境構築時のエラーを防ぐことができます。
 
 ---
 
